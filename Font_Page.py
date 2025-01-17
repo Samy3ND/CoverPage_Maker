@@ -112,28 +112,31 @@ def replace_placeholders(doc, name, roll_number, lab_report_number, subject, tea
 
 def convert_docx_to_pdf(doc, output_name):
     try:
-        # Save the DOCX file to a temporary location using tempfile
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as temp_doc_file:
-            temp_doc_path = temp_doc_file.name
-            doc.save(temp_doc_path)  
-            print(f"Saved DOCX to: {temp_doc_path}")
+        docx_file_path = f"{output_name}.docx"
+        pdf_file_path = f"{output_name}.pdf"
 
-        # Convert the DOCX to PDF 
-        pdf_file_path = temp_doc_path.replace(".docx", ".pdf")
-        print(f"PDF will be saved to: {pdf_file_path}") 
-        os.rename(temp_doc_path, pdf_file_path)
+        doc.save(docx_file_path)
+        print(f"Saved DOCX to: {docx_file_path}")
+
+        os.rename(docx_file_path, pdf_file_path)
         print(f"PDF saved to: {pdf_file_path}")
 
     except Exception as e:
         print(f"Error during DOCX to PDF conversion: {e}")
         raise Exception(f"Error during DOCX to PDF conversion: {e}")
     finally:
-        if os.path.exists(temp_doc_path):
-            os.remove(temp_doc_path)
-            print(f"Temporary DOCX file removed: {temp_doc_path}")
+        # Remove the DOCX file after conversion (if needed)
+        if os.path.exists(docx_file_path):
+            os.remove(docx_file_path)
+            print(f"Temporary DOCX file removed: {docx_file_path}")
+
+    # Read the PDF file into memory
     with open(pdf_file_path, "rb") as pdf_file:
         pdf_bytes = BytesIO(pdf_file.read())
+
+    # Clean up and remove the generated PDF file after reading into memory
     os.remove(pdf_file_path)
+    print(f"Temporary PDF file removed: {pdf_file_path}")
 
     return pdf_bytes
 
