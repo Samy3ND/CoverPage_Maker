@@ -1,3 +1,2 @@
-streamlit
-python-docx
-pypiwin32
+streamlit>=1.0
+python-docx>=0.8.11
