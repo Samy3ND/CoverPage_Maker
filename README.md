@@ -3,7 +3,11 @@
 A Streamlit-based application to generate lab report cover pages for students of the 5th Semester at St. Xavier's College. This tool streamlines the process by filling in placeholders in a Word document template with student and subject-specific information.
 
 ---
+## Live Demo
 
+Try the app here: [Lab Report Cover Page Generator]([https://cpmaker.streamlit.app/])
+
+---
 ## Features
 
 - Auto-fills student name based on roll number.
