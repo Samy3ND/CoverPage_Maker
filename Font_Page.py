@@ -185,4 +185,4 @@ if st.button("Generate Cover Page"):
     else:
         st.error("Please fill out all the fields!")
 
-st.markdown("Developed by: Samyog :smile: V 1.0"
+st.markdown("Developed by: Samyog :smile: V 1.0")
