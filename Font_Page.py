@@ -168,7 +168,7 @@ if st.button("Generate Cover Page"):
         try:
             with st.spinner("Generating your cover page..."):
                 # Load the template DOCX file (font.docx)
-                doc = Document("font.docx") 
+                doc = Document("Font.docx") 
                 updated_doc = replace_placeholders(doc, name, roll_number_input, str(lab_report_number), subject, teacher)
 
                 pdf_bytes = convert_docx_to_pdf(updated_doc, "cover_page")
