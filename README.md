@@ -5,7 +5,7 @@ A Streamlit-based application to generate lab report cover pages for students of
 ---
 ## Live Demo
 
-Try the app here: [Lab Report Cover Page Generator]([https://cpmaker.streamlit.app/])
+Try the app here: [Lab Report Cover Page Generator](https://cpmaker.streamlit.app/)
 
 ---
 ## Features
