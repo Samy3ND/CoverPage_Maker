@@ -1,7 +1,7 @@
 streamlit 
-Document
+docx
 datetime
-BytesIO
+io
 os
 win32com.client
 pythoncom
