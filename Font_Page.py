@@ -5,6 +5,7 @@ from io import BytesIO
 import os
 import tempfile
 from docx.shared import Pt
+import pdfkit
 #student list for maping
 
 roll_number_to_name={
@@ -110,25 +111,29 @@ def replace_placeholders(doc, name, roll_number, lab_report_number, subject, tea
 
     return doc
 
+
+
+
 def convert_docx_to_pdf(doc, output_name):
     try:
-        docx_file_path = f"{output_name}.docx"
+        # Save DOCX to HTML first
+        html_file_path = f"{output_name}.html"
+        doc.save(html_file_path)
+        print(f"Saved HTML to: {html_file_path}")
+
+        # Use pdfkit to convert HTML to PDF
         pdf_file_path = f"{output_name}.pdf"
-
-        doc.save(docx_file_path)
-        print(f"Saved DOCX to: {docx_file_path}")
-
-        os.rename(docx_file_path, pdf_file_path)
+        pdfkit.from_file(html_file_path, pdf_file_path)
         print(f"PDF saved to: {pdf_file_path}")
 
     except Exception as e:
         print(f"Error during DOCX to PDF conversion: {e}")
         raise Exception(f"Error during DOCX to PDF conversion: {e}")
     finally:
-        # Remove the DOCX file after conversion (if needed)
-        if os.path.exists(docx_file_path):
-            os.remove(docx_file_path)
-            print(f"Temporary DOCX file removed: {docx_file_path}")
+        # Remove the HTML file after conversion (if needed)
+        if os.path.exists(html_file_path):
+            os.remove(html_file_path)
+            print(f"Temporary HTML file removed: {html_file_path}")
 
     # Read the PDF file into memory
     with open(pdf_file_path, "rb") as pdf_file:
