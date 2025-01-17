@@ -3,35 +3,87 @@ from docx import Document
 from datetime import datetime
 from io import BytesIO
 import os
-import pypandoc
-from docx.shared import Pt
 import tempfile
+from docx.shared import Pt
+#student list for maping
 
-# Student list for mapping
-roll_number_to_name = {
-    '022BIM001': 'Aabha Kumhal', 
-    '022BIM003': 'Aarchi Palikhel', 
-    '022BIM004': 'Aarohan Shakya', 
-    '022BIM005': 'Aayush Ghimire', 
-    '022BIM006': 'Abhilasha Adhikari',
-    # Add the rest of the student mappings here...
+roll_number_to_name={
+
+ '022BIM001':'Aabha Kumhal',
+ 
+ '022BIM003':'Aarchi Palikhel',
+ '022BIM004':'Aarohan Shakya',
+ '022BIM005':'Aayush Ghimire',
+ '022BIM006':'Abhilasha Adhikari',
+ '022BIM007':'Aelish Maharjan',
+ '022BIM010':'Anish Katwal',
+ '022BIM012':'Anuskha Shakya',
+ '022BIM013':'Aprama Pokhrel',
+ '022BIM014':'Arya Jyoti Bajracharya',
+ '022BIM015':'Aryan Man Singh Pradhan',
+ '022BIM016':'Avishek Bista',
+ '022BIM017':'Babita Khadka',
+ '022BIM019':'Biju Shrestha',
+ '022BIM020':'Bimmi Shrestha',
+ '022BIM022':'Davish Shrestha',
+ '022BIM023':'Deepika Dangol',
+ '022BIM024':'Drishya Dangol',
+ '022BIM025':'Gracy Rai',
+ '022BIM026':'Hrishav Karmacharya',
+ '022BIM028':'Ishan Thapa Magar',
+ '022BIM029':'Krishtina Ranjit',
+ '022BIM030':'Kritan Man Shrestha',
+ '022BIM031':'Lyrica Rana',
+ '022BIM032':'Mehebika Rai',
+ '022BIM033':'Nidhi Rauniyar',
+ '022BIM067':'Shubham Yadav',
+ '022BIM035':'Nirusha Chalise',
+ '022BIM036':'Nischal Shrestha',
+ '022BIM037':'Nishant Pokherel',
+ '022BIM038':'Pragya Chalise',
+ '022BIM039':'Prakriti Acharya',
+ '022BIM040':' Prapti Bajracharya',
+ '022BIM041':'Pratik Maharjan',
+ '022BIM042':'Prince Panthi',
+ '022BIM044':'Rishi Kumar Panday',
+ '022BIM045':'Rishna Joshi',
+ '022BIN046':'Sachistha Gurung',
+ '022BIM047':'Sampurna Poudyal',
+ '022BIM048':'Samyog K.C.',
+ '022BIM049':'Saraswoti Kapali',
+ '022BIM050':'Sarthak Rupakheti',
+ '022BIM051':'Sashank Shahi',
+ '022BIM052':'Shreskar Bista',
+ '022BIM053':'Shriya Shakya',
+ '022BIM054':'Shriyanshu Dhakal',
+ '022BIM055':'Srijana Khatri',
+ '022BIM056':'Stuti Karanjeet',
+ '022BIM057':'Subin Malla',
+ '022BIM058':'Sudhanshu Yadav',
+ '022BIM059':'Sugam Rana',
+ '022BIM060':'Sujan Pokharel',
+ '022BIM062':'Sushan Narayan Dangol',
+ '022BIM063':'Tisa Manandhar',
+ '022BIM064':'Triza Kafle',
+ '022BIM065':'Vijan Dharel',
+ '022BIM066':'Aakanksha Lamsal'  
 }
 
-# Subject Teacher names
+# Subject Teacher name 
+
 subject_to_teacher = {
     "System Design & Development [IT 242]": "Er. Sanjay Kumar Yadav",
     "Python": "Mr Ramesh Shahi [IT 243]",
     "Artificial Intelligence [IT 288]": "Er Nischal Shrestha",
     "Information Security [IT 244]": "Er. Saroj Shahi",
 }
-
 def replace_in_paragraph(paragraph, replacements):
     for run in paragraph.runs:
         for key, value in replacements.items():
             if key in run.text:
                 run.text = run.text.replace(key, value)
-                run.font.name = "Times New Roman"  # Set font to Times New Roman
-                run.font.size = Pt(12)  # Set font size to 12 pt
+                run.font.name = "Times New Roman" 
+                run.font.size = Pt(12)  
     return paragraph
 
 def replace_placeholders(doc, name, roll_number, lab_report_number, subject, teacher):
@@ -66,24 +118,19 @@ def convert_docx_to_pdf(doc, output_name):
             doc.save(temp_doc_path)  
             print(f"Saved DOCX to: {temp_doc_path}")
 
-        # Set the output PDF file path
+        # Convert the DOCX to PDF 
         pdf_file_path = temp_doc_path.replace(".docx", ".pdf")
         print(f"PDF will be saved to: {pdf_file_path}") 
-
-        # Use pypandoc to convert DOCX to PDF
-        output = pypandoc.convert_file(temp_doc_path, 'pdf', outputfile=pdf_file_path)
+        os.rename(temp_doc_path, pdf_file_path)
         print(f"PDF saved to: {pdf_file_path}")
 
     except Exception as e:
         print(f"Error during DOCX to PDF conversion: {e}")
         raise Exception(f"Error during DOCX to PDF conversion: {e}")
     finally:
-        # Cleanup temporary DOCX file
         if os.path.exists(temp_doc_path):
             os.remove(temp_doc_path)
             print(f"Temporary DOCX file removed: {temp_doc_path}")
-
-    # Read the PDF into memory
     with open(pdf_file_path, "rb") as pdf_file:
         pdf_bytes = BytesIO(pdf_file.read())
     os.remove(pdf_file_path)
@@ -117,8 +164,8 @@ if st.button("Generate Cover Page"):
     if name and roll_number_input and lab_report_number:
         try:
             with st.spinner("Generating your cover page..."):
-                doc = Document()  # Create a new document instead of loading from file
-
+                # Load the template DOCX file (font.docx)
+                doc = Document("font.docx") 
                 updated_doc = replace_placeholders(doc, name, roll_number_input, str(lab_report_number), subject, teacher)
 
                 pdf_bytes = convert_docx_to_pdf(updated_doc, "cover_page")
@@ -134,3 +181,5 @@ if st.button("Generate Cover Page"):
             st.error(f"Error: {e}")
     else:
         st.error("Please fill out all the fields!")
+
+st.markdown("Developed by: Samyog :smile: V 1.0"
