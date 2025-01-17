@@ -1,9 +1,3 @@
-streamlit 
-docx
-datetime
-io
-os
-win32com.client
-pythoncom
-Pt
-tempfile
+streamlit
+python-docx
+pypiwin32
